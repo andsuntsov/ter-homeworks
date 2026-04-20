@@ -1,89 +1,60 @@
-# Домашнее задание к занятию "`Введение в Terraform`" - `Сунцов Андрей`
+# Домашнее задание к занятию "`Основы Terraform. Yandex Cloud`" - `Сунцов Андрей`
 
 
 ---
 
 ### Задание 1
 
-`В каком terraform-файле, согласно этому .gitignore, допустимо сохранить личную, секретную информацию?`
+`скриншот ЛК Yandex Cloud с созданной ВМ, где видно внешний ip-адрес`
 
-`personal.auto.tfvars`
-
----
-
-`Найдите в state-файле секретное содержимое созданного ресурса random_password, пришлите в качестве ответа конкретный ключ и его значение.`
-
-`Cкриншот содержимого файла terraform.tfstate`
-
-![скриншот содержимого файла terraform.tfstate](screenshots/task-1.3.png)
+![скриншот ЛК Yandex Cloud с созданной ВМ, где видно внешний ip-адрес](screenshots/task-1.1.png)
 
 ---
 
-`Раскомментируйте блок кода, примерно расположенный на строчках 29–42 файла main.tf. Выполните команду terraform validate. Объясните, в чём заключаются намеренно допущенные ошибки.`
+`скриншот консоли, curl должен отобразить тот же внешний ip-адрес`
 
-1. У resource "docker_image" нет локального имени
-2. Некорректное имя resource "docker_container" "1nginx"
-3. Неверная ссылка на random_password:
-	1. random_password.random_string_FAKE
-	2. resulT
+![скриншот консоли, curl должен отобразить тот же внешний ip-адрес](screenshots/task-1.2.png)
 
 ---
 
-`Выполните код. В качестве ответа приложите: исправленный фрагмент кода и вывод команды docker ps.`
+`ответы на вопросы`
 
-`Исправленый фрагмент кода:`
-
-```bash
-resource "docker_image" "nginx" {
-  name         = "nginx:latest"
-  keep_locally = true
-}
-
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.image_id
-  name  = "example_${random_password.random_string.result}"
-
-  ports {
-    internal = 80
-    external = 9090
-  }
-}
-```
-
-`Cкриншот команды docker ps`
-
-![скриншот команды docker ps](screenshots/task-1.5.png)
+1. Ошибка в файле main.tf: platform_id = "standart-v4" -> platform_id = "standard-v4"
+2. preemptible = true - делает ВМ прерываемой, то есть дешёвой: Yandex Cloud может остановить её в любой момент
+3. core_fraction = 5 - задаёт долю производительности CPU, выделенную ВМ.
 
 ---
 
-`Объясните своими словами, в чём может быть опасность применения ключа -auto-approve`
+### Задание 2
 
-`можно случайно удалить или изменить важные ресурсы`
+`скриншот команды terraform plan`
 
-`Догадайтесь или нагуглите зачем может пригодиться данный ключ?`
-
-1. в CI/CD пайплайнах
-2. в тестировании - быстро очистить тестовую инфраструктуру
-3. в скриптах
-
-`Cкриншот команды docker ps`
-
-![скриншот команды docker ps](screenshots/task-1.6.png)
+![скриншот команды terraform plan](screenshots/task-2.png)
 
 ---
 
-`Приложите содержимое файла terraform.tfstate`
+### Задание 3
 
-`Cкриншот содержимого файла terraform.tfstate`
-
-![скриншот содержимого файла terraform.tfstate](screenshots/task-1.7.png)
+Выполнено. Исходя из задания предоставлять данные о выполнении не требуется.
 
 ---
 
-`Объясните, почему при этом не был удалён docker-образ nginx:latest`
+### Задание 4
 
-`В коде присутствует строка keep_locally = true. Она означает, что Terraform не должен удалять Docker-образ при выполнении terraform destroy`
+`вывод значений ip-адресов команды terraform output`
 
-`ОБЯЗАТЕЛЬНО ПОДКРЕПИТЕ строчкой из документации terraform провайдера docker`
+![вывод значений ip-адресов команды terraform output](screenshots/task-4.png)
 
-`keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.`
+### Задание 5
+
+Выполнено. Исходя из задания предоставлять данные о выполнении не требуется.
+
+---
+
+### Задание 6
+
+`скриншот команды terraform plan`
+
+![скриншот команды terraform plan](screenshots/task-6.png)
+
+---
