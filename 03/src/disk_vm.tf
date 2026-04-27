@@ -13,7 +13,7 @@ resource "yandex_compute_instance" "storage" {
   hostname    = "storage"
   platform_id = "standard-v1"
   zone        = var.default_zone
-  depends_on = [yandex_compute_instance.web]
+  depends_on  = [yandex_compute_instance.web]
 
   resources {
     cores         = 2
@@ -37,7 +37,7 @@ resource "yandex_compute_instance" "storage" {
   }
 
   network_interface {
-    subnet_id          = data.yandex_vpc_subnet.develop.id
+    subnet_id          = yandex_vpc_subnet.develop.id
     nat                = true
     security_group_ids = [yandex_vpc_security_group.example.id]
   }
